@@ -2,7 +2,7 @@
 
 var socket;
 
-var screen_dims = [100, 100];
+var screen_dims = [600, 600];
 var screen_color = [0, 0, 0];
 
 function setup() {
@@ -26,7 +26,8 @@ function displayText(key_data) {
 
 function draw() {
 	ellipseMode(CENTER);
-//	ellipse(mouseX, mouseY, 5, 5);
+	fill(255, 255, 255);
+	ellipse(mouseX, mouseY, 500, 500);
 }
 
 
