@@ -1,37 +1,31 @@
-//
+// Alek Westover
+// Create a chat server example on socket.io
+
 var express = require('express');
 var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
+var server = app.listen(3000);
 
-var users = [];
-var connections = [];
+app.use(express.static('public'));
 
-var port = process.env.PORT || 3000;
+console.log("server running");
 
-server.listen(port);
+var socket = require('socket.io');
+var io = socket(server); // Input output
 
-console.log("server.js is running");
+io.sockets.on('connection', newConnection);
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + "/index.html");
-});
+function newConnection(socket) {
+	console.log(socket.id);
+	socket.on('mouse', mouseMsg);
+	socket.on('key', keyMsg);
+	function mouseMsg(data) {
+		socket.broadcast.emit('mouse', data);
+		console.log(data);
+	}
+	function keyMsg(key_data) {
+		socket.broadcast.emit('key', key_data);
+	}
+}
 
+console.log("hello");
 
-io.sockets.on('connection', function(socket){
-  connections.push(socket);
-  console.log("Connected: %s sockets connected", connections.length);
-
-  //disconect
-  socket.on('disconnect', function(data) {
-    connections.splice(connections.indexOf(socket), 1);
-    console.log("Connected: %s sockets connected", connections.length);
-  });
-
-
-  //send message
-  socket.on('send message', function(data){
-    io.sockets.emit('new message', {msg: data});
-  })
-
-});
