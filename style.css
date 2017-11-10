@@ -1,0 +1,52 @@
+/* Style for the website */
+body {
+    background-color: black;
+}
+
+* {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.controls {
+  width: 30%;
+  height: 20%;
+  left: 5%;
+  bottom: 5%;
+  position: fixed;
+  align-items: center;
+}
+
+button {
+  margin: 0;
+  width: 50%;
+  height: 33.3%;
+  font-size: 150%;
+}
+
+button.LeftArrow {
+  float: left;
+}
+
+button.RightArrow {
+  float: right;
+}
+
+button.Thrust {
+  width: 100%;
+}
+
+button.Shoot {
+  width: 100%;
+}
+
+div.PauseInfo {
+  width: 30%;
+  padding: 2%;
+  float: right;
+}
+
+button.Pause {
+  float: right;
+}
