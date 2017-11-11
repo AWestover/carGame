@@ -14,7 +14,8 @@ function setup() {
 
 	picture = loadImage("car.png");
 
-	socket = io.connect(3000); //localhost and 127.0.0.1 are equivalent
+	socket = io.connect();
+
 	socket.on('mouse', newDrawing);
 	socket.on('key', displayText);
 }
