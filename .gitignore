@@ -1,2 +1,4 @@
-node_modules
-npm-debug.log
+# do not include these files
+node_modules
+npm-debug.log
+libraries
