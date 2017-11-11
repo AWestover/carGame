@@ -5,8 +5,14 @@ var socket;
 var screen_dims = [600, 600];
 var screen_color = [0, 0, 0];
 
+var picture;
+
+var imageLoc = [300, 300];
+
 function setup() {
 	createCanvas(screen_dims[0], screen_dims[1]);
+
+	picture = loadImage("car.png");
 
 	socket = io.connect('http://localhost:3000'); //localhost and 127.0.0.1 are equivalent
 	socket.on('mouse', newDrawing);
@@ -25,11 +31,25 @@ function displayText(key_data) {
 }
 
 function draw() {
-	ellipseMode(CENTER);
+	imageMode(CENTER);
 	fill(255, 255, 255);
-	ellipse(mouseX, mouseY, 500, 500);
+	image(picture, mouseX, mouseY);
 }
 
+
+function displayCar()
+{
+	background(255, 255, 255);
+	imageMode(CENTER);
+	fill(255, 255, 255);
+	image(picture, imageLoc[0], imageLoc[1]);
+}
+
+
+function updateCar(key)
+{
+	if (key == )
+}
 
 function mousePressed() {
 	console.log(mouseX, mouseY);
