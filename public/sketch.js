@@ -49,7 +49,22 @@ function displayCar()
 
 function updateCar(key)
 {
-	//if (key == )
+	if (key == 'a')
+	{
+		console.log("a");
+	}
+	if (key == 'd')
+	{
+		console.log("d");
+	}
+	if (key == 'w')
+	{
+		console.log("w");
+	}
+	if (key == 's')
+	{
+		console.log("s");
+	}
 }
 
 function mousePressed() {
