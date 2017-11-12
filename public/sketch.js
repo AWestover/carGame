@@ -34,7 +34,8 @@ function displayText(key_data) {
 function draw() {
 	imageMode(CENTER);
 	fill(255, 255, 255);
-	image(picture, mouseX, mouseY);
+	image(picture, imageLoc[0], imageLoc[1]);
+	//image(picture, mouseX, mouseY);
 }
 
 
