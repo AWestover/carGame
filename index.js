@@ -3,7 +3,9 @@
 
 var express = require('express');
 var app = express();
-var server = require('http').createServer(app).listen(3000);
+
+var port = process.env.PORT || 3000;
+var server = require('http').createServer(app).listen(port);
 
 app.use(express.static('public'));
 
