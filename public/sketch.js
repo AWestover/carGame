@@ -22,12 +22,12 @@ function setup() {
 
 function newDrawing(data) {
 	fill(0, 0, 0);
-	console.log(data);
+	//console.log(data);
 	ellipse(data.x, data.y, 10, 10);
 }
 
 function displayText(key_data) {
-	console.log(key_data);
+	//console.log(key_data);
 	text(key_data.k, screen_dims[0]*random(), screen_dims[1]*random());
 }
 
@@ -41,7 +41,7 @@ function draw() {
 
 function displayCar()
 {
-	background(255, 255, 255);
+	//background(255, 255, 255);
 	imageMode(CENTER);
 	fill(255, 255, 255);
 	image(picture, imageLoc[0], imageLoc[1]);
@@ -50,26 +50,27 @@ function displayCar()
 
 function updateCar(key)
 {
-	if (key == 'a')
+	var speed = 10;
+	if (key == 'A' || key == 'a')
 	{
-		console.log("a");
+		imageLoc[0] -= speed;
 	}
-	if (key == 'd')
+	if (key == 'd' || key == 'D')
 	{
-		console.log("d");
+		imageLoc[0] += speed;
 	}
-	if (key == 'w')
+	if (key == 'w' || key == 'W')
 	{
-		console.log("w");
+		imageLoc[1] -= speed;
 	}
-	if (key == 's')
+	if (key == 's' || key == 'S')
 	{
-		console.log("s");
+		imageLoc[1] += speed;
 	}
 }
 
 function mousePressed() {
-	console.log(mouseX, mouseY);
+	//console.log(mouseX, mouseY);
 	var data = {
 		x: mouseX,
 		y: mouseY
@@ -79,7 +80,8 @@ function mousePressed() {
 }
 
 function keyReleased() {
-	console.log(key);
+	//console.log(key);
+	updateCar(key);
 	var key_data = {
 		k: key
 	}
