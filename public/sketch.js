@@ -9,10 +9,11 @@ var playerLoc, enemyLoc;
 var playerVel, enemyVel;
 const maxSpeed = 1;
 const acceleration = 0.5;
+const playersDims = new p5.Vector(80, 160);
 
 function setup() {
 	createCanvas(screen_dims[0], screen_dims[1]);
-	playerLoc = createVector(screen_dims[0]/2, screen_dims[1]);
+	playerLoc = createVector(screen_dims[0]/2, screen_dims[1]/2);
 	enemyLoc = createVector(screen_dims[0]/2, screen_dims[1]/2);
 
 	playerVel = new p5.Vector(0, 0);// same as createVector()
@@ -40,15 +41,21 @@ function draw() {
 		enemyVel.mult(maxSpeed / enemyVel.mag());
 	}
 
-	playerLoc.add(playerVel);//*dt
-	enemyLoc.add(enemyLoc);//*dt
+	if (vecInCanvas(playerLoc))
+	{
+		playerLoc.add(playerVel);//*dt (dt = 1)
+	}
+	if (vecInCanvas(enemyLoc))
+	{
+		enemyLoc.add(enemyLoc);//*dt (dt = 1)
+	}
 }
 
 function displayCar(x, y)
 {
 	imageMode(CENTER);
 	fill(255, 255, 255);
-	image(picture, x, y);
+	image(picture, x, y, playersDims.x, playersDims.y);
 }
 
 function keyReleased() {
