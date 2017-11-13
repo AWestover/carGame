@@ -1,4 +1,5 @@
 // Alek Westover
+// A multiplayer game
 
 var socket;
 
@@ -7,25 +8,43 @@ var screen_color = [0, 0, 0];
 
 var picture;
 
-var playerLoc = [screen_dims[0]/2, screen_dims[1]/2];
-var enemyLoc = [screen_dims[0]/2, screen_dims[1]/2];
+var playerLoc, enemyLoc;
+var playerVel, enemyVel;
+
+var maxSpeed = 1;
+var acceleration = 0.5;
 
 function setup() {
 	createCanvas(screen_dims[0], screen_dims[1]);
+	playerLoc = createVector(screen_dims[0]/2, screen_dims[1]);
+	enemyLoc = createVector(screen_dims[0]/2, screen_dims[1]/2);
 
-	picture = loadImage("car.png");
+	playerVel = new p5.Vector(0, 0);
+	enemyVel = createVector(0, 0);
 
+	picture = loadImage("bear.png");
 	socket = io.connect();
-
-	//socket.on('mouse', newDrawing);
 	socket.on('key', updateEnemy);
 }
 
 
 function draw() {
 	background(0, 0, 0);
-	displayCar(enemyLoc[0], enemyLoc[1]);
-	displayCar(playerLoc[0], playerLoc[1]);
+	displayCar(enemyLoc.x, enemyLoc.y);
+	displayCar(playerLoc.x, playerLoc.y);
+
+	if (playerVel.mag() > maxSpeed)
+	{
+		playerVel.mult(maxSpeed/playerVel.mag());
+	}
+
+	if (enemyVel.mag() > maxSpeed)
+	{
+		enemyVel.mult(maxSpeed/enemyVel.mag());
+	}
+
+	playerLoc.add(playerVel);//*dt
+	enemyLoc.add(enemyLoc);//*dt
 }
 
 function displayCar(x, y)
@@ -36,57 +55,46 @@ function displayCar(x, y)
 }
 
 function keyReleased() {
-	var cUpdate = updateCar(key);
-	playerLoc[0] += cUpdate[0];
-	playerLoc[1] += cUpdate[1];
-	var key_data = {
-		k: key
-	}
+	playerVel += updateCarVector(key);
+	var key_data = {k: key}
 	socket.emit('key', key_data);
-	//displayText(key_data);
 }
 
 function updateCarVector(key)
 {
-	var speed = 10;
-	var outVector = [0, 0];
+	var outVector = new p5.Vector(0, 0);
 	if (key == 'A' || key == 'a')
 	{
-		outVector[0] = -speed;
+		outVector.x = -acceleration;
 	}
 	else if (key == 'd' || key == 'D')
 	{
-		outVector[0] = speed;
+		outVector.x = acceleration;
 	}
 	else if (key == 'w' || key == 'W')
 	{
-		outVector[1] = -speed;
+		outVector.y = -acceleration;
 	}
 	else if (key == 's' || key == 'S')
 	{
-		outVector[1] = speed;
+		outVector.y = acceleration;
 	}
 	return outVector;
 }
 
-
-function updateEnemy(key_data)
+function updateEnemy()
 {
-	var cUpdate = updateCar(key_data.k);
-	enemyLoc[0] += enemyLoc[0];
-	enemyLoc[1] += enemyLoc[1];
+	enemyVel += updateCarVector(key_data.k);
 }
+
 /*
 function newDrawing(data) {
 	fill(0, 0, 0);
 	ellipse(data.x, data.y, 10, 10);
 }
-
-
 function displayText(key_data) {
 	text(key_data.k, screen_dims[0]*random(), screen_dims[1]*random());
 }
-
 function mousePressed()
 {
 	var data = {
