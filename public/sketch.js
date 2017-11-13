@@ -41,13 +41,16 @@ function draw() {
 		enemyVel.mult(maxSpeed / enemyVel.mag());
 	}
 
-	if (vecInCanvas(playerLoc))
+	playerLoc.add(playerVel);//*dt (dt = 1)
+	enemyLoc.add(enemyLoc);//*dt (dt = 1)
+
+	if (!vecInCanvas(playerLoc))
 	{
-		playerLoc.add(playerVel);//*dt (dt = 1)
+		playerLoc.subtract(playerVel);//*dt (dt = 1)
 	}
-	if (vecInCanvas(enemyLoc))
+	if (!vecInCanvas(enemyLoc))
 	{
-		enemyLoc.add(enemyLoc);//*dt (dt = 1)
+		enemyLoc.subrtract(enemyLoc);//*dt (dt = 1)
 	}
 }
 
