@@ -36,21 +36,11 @@ function draw() {
 		playerVel.mult(maxSpeed / playerVel.mag());
 	}
 
-	if (enemyVel.mag() > maxSpeed)
-	{
-		enemyVel.mult(maxSpeed / enemyVel.mag());
-	}
-
 	playerLoc.add(playerVel);//*dt (dt = 1)
-	enemyLoc.add(enemyLoc);//*dt (dt = 1)
 
 	if (!vecInCanvas(playerLoc))
 	{
-		playerLoc.subtract(playerVel);//*dt (dt = 1)
-	}
-	if (!vecInCanvas(enemyLoc))
-	{
-		enemyLoc.subrtract(enemyLoc);//*dt (dt = 1)
+		playerLoc.sub(playerVel);//*dt (dt = 1)
 	}
 }
 
@@ -63,7 +53,11 @@ function displayCar(x, y)
 
 function keyReleased() {
 	playerVel.add(updateCarVector(key));
-	var key_data = {k: key, pos: playerLoc}
+	var key_data = {
+		k: key,
+		expos: playerLoc.x,
+		eypos: playerLoc.y
+	}//, pos: playerLoc}
 	socket.emit('key', key_data);
 }
 
@@ -91,36 +85,16 @@ function updateCarVector(key)
 
 function updateEnemy(key_data)
 {
-	enemyVel.add(updateCarVector(key_data.k));
+	enemyLoc.set(key_data.expos, key_data.eypos)
 }
 
 function vecInCanvas(vec)
 {
-		let xLIn = vec.x > 0;
-		let xRIn = vec.x < screen_dims[0];
+		let xLIn = vec.x > playersDims.x / 2;
+		let xRIn = vec.x < screen_dims[0] - playersDims.x / 2;
 
-		let yUIn = vec.y > 0;
-		let yLIn = vec.y < screen_dims[1];
+		let yUIn = vec.y > playersDims.y / 2;
+		let yLIn = vec.y < screen_dims[1] - playersDims.y / 2;
 
 		return (xLIn && xRIn && yUIn && yLIn);
 }
-
-
-/*
-function newDrawing(data) {
-	fill(0, 0, 0);
-	ellipse(data.x, data.y, 10, 10);
-}
-function displayText(key_data) {
-	text(key_data.k, screen_dims[0]*random(), screen_dims[1]*random());
-}
-function mousePressed()
-{
-	var data = {
-		x: mouseX,
-		y: mouseY
-	}
-	socket.emit('mouse', data);
-	newDrawing(data);
-}
-*/
