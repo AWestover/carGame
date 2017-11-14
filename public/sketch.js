@@ -63,7 +63,7 @@ function displayCar(x, y)
 
 function keyReleased() {
 	playerVel.add(updateCarVector(key));
-	var key_data = {k: key}
+	var key_data = {k: key, pos: playerLoc}
 	socket.emit('key', key_data);
 }
 
