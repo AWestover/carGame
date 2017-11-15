@@ -13,23 +13,30 @@ app.use(express.static('public'));
 console.log("server running");
 
 var socket = require('socket.io');
-var io = socket(server); // Input output
+var io = socket(server);
 
 io.sockets.on('connection', newConnection);
 
 function newConnection(socket) {
 	//console.log(socket.id);
-	//socket.on('mouse', mouseMsg);
 	socket.on('key', keyMsg);
+	socket.on('updatePlayer', locMsg);
 	/*
 	function mouseMsg(data) {
 		socket.broadcast.emit('mouse', data);
 		//console.log(data);
 	}
 	*/
-	function keyMsg(key_data) {
+	function keyMsg(key_data)
+	{
 		socket.broadcast.emit('key', key_data);
 	}
+
+	function locMsg(loc_data)
+	{
+		socket.broadcast.emit('updatePlayer', loc_data);
+	}
+
 }
 
-console.log("hello");
+console.log("Alek Is running");

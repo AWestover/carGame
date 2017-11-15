@@ -10,21 +10,29 @@ var playerVel, enemyVel;
 const maxSpeed = 1;
 const acceleration = 0.5;
 const playersDims = new p5.Vector(80, 160);
+const dt = 1;
 
 function setup() {
 	createCanvas(screen_dims[0], screen_dims[1]);
 	playerLoc = createVector(screen_dims[0]/2, screen_dims[1]/2);
 	enemyLoc = createVector(screen_dims[0]/2, screen_dims[1]/2);
 
-	playerVel = new p5.Vector(0, 0);// same as createVector()
+	// createVector is a synonym for createVector()
+	playerVel = new p5.Vector(0, 0);
 	enemyVel = new p5.Vector(0, 0);
 
 	picture = loadImage("bear.png");
 	socket = io.connect();
-	socket.on('key', updateEnemy);
+	socket.on('key', freakOut);
+	socket.on('updatePlayer', updateEnemy);
 
 }
 
+
+function freakOut(key_data)
+{
+	console.log("ahh");
+}
 
 function draw() {
 	background(0, 0, 0);
@@ -36,12 +44,20 @@ function draw() {
 		playerVel.mult(maxSpeed / playerVel.mag());
 	}
 
-	playerLoc.add(playerVel);//*dt (dt = 1)
-
-	if (!vecInCanvas(playerLoc))
+	var nextVel = p5.Vector.add(p5.Vector.mult(playerVel, dt), playerLoc);
+	if (vecInCanvas(nextVel) && playerVel.mag() != 0)
 	{
-		playerLoc.sub(playerVel);//*dt (dt = 1)
+		playerLoc.add(playerVel.mult(dt));
+		var loc_data = {
+			expos: playerLoc.x,
+			eypos: playerLoc.y
+		}
+		socket.emit('updatePlayer', loc_data);
 	}
+	else {
+		playerVel.mult(0);
+	}
+
 }
 
 function displayCar(x, y)
@@ -57,7 +73,7 @@ function keyReleased() {
 		k: key,
 		expos: playerLoc.x,
 		eypos: playerLoc.y
-	}//, pos: playerLoc}
+	}
 	socket.emit('key', key_data);
 }
 
@@ -83,9 +99,10 @@ function updateCarVector(key)
 	return outVector;
 }
 
-function updateEnemy(key_data)
+function updateEnemy(loc_data)
 {
-	enemyLoc.set(key_data.expos, key_data.eypos)
+	console.log("update?");
+	enemyLoc.set(loc_data.expos, loc_data.eypos);
 }
 
 function vecInCanvas(vec)
