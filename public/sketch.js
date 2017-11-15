@@ -7,7 +7,7 @@ var screen_color = [0, 0, 0];
 var picture;
 var playerLoc, enemyLoc;
 var playerVel, enemyVel;
-const maxSpeed = 1;
+const maxSpeed = 5;
 const acceleration = 0.5;
 const playerDims = new p5.Vector(80, 160);
 const dt = 1;
@@ -31,6 +31,12 @@ function setup() {
 		width: playerDims.x,
 		height: playerDims.y
 	}).appendTo('body');
+	jQuery('<img/>', {
+    id: 'bearEnemy',
+    src: 'bear.png',
+		width: playerDims.x,
+		height: playerDims.y
+	}).appendTo('body');
 }
 
 
@@ -40,8 +46,8 @@ function freakOut(key_data)
 }
 
 function draw() {
-	displayCar(enemyLoc.x, enemyLoc.y);
-	displayCar(playerLoc.x, playerLoc.y);
+	displayCar(enemyLoc.x, enemyLoc.y, '#bearEnemy');
+	displayCar(playerLoc.x, playerLoc.y, '#bear');
 
 	if (playerVel.mag() > maxSpeed)
 	{
@@ -64,10 +70,10 @@ function draw() {
 
 }
 
-function displayCar(x, y)
+function displayCar(x, y, tag)
 {
-	$('#bear').css("top", (playerLoc.y - playerDims.y / 2) + "px");
-	$('#bear').css("left", (playerLoc.x - playerDims.x / 2) + "px");
+	$(tag).css("top", (y - playerDims.y / 2) + "px");
+	$(tag).css("left", (x - playerDims.x / 2) + "px");
 }
 
 function keyReleased() {
@@ -104,7 +110,6 @@ function updateCarVector(key)
 
 function updateEnemy(loc_data)
 {
-	console.log("update?");
 	enemyLoc.set(loc_data.expos, loc_data.eypos);
 }
 
