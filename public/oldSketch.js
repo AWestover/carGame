@@ -2,20 +2,20 @@
 // A multiplayer game
 
 var socket;
-var screen_dims;
+var screen_dims = [600, 600];
 var screen_color = [0, 0, 0];
 var picture;
 var playerLoc, enemyLoc;
 var playerVel, enemyVel;
 const maxSpeed = 1;
 const acceleration = 0.5;
-const playerDims = new p5.Vector(80, 160);
+const playersDims = new p5.Vector(80, 160);
 const dt = 1;
 
 function setup() {
-	screen_dims = [windowWidth, windowHeight];
-	playerLoc = createVector(screen_dims[0] / 2, screen_dims[1] / 2);
-	enemyLoc = createVector(screen_dims[0] / 2, screen_dims[1] / 2);
+	createCanvas(screen_dims[0], screen_dims[1]);
+	playerLoc = createVector(screen_dims[0]/2, screen_dims[1]/2);
+	enemyLoc = createVector(screen_dims[0]/2, screen_dims[1]/2);
 
 	// createVector is a synonym for createVector()
 	playerVel = new p5.Vector(0, 0);
@@ -25,12 +25,7 @@ function setup() {
 	socket = io.connect();
 	socket.on('key', freakOut);
 	socket.on('updatePlayer', updateEnemy);
-	jQuery('<img/>', {
-    id: 'bear',
-    src: 'bear.png',
-		width: playerDims.x,
-		height: playerDims.y
-	}).appendTo('body');
+
 }
 
 
@@ -40,6 +35,7 @@ function freakOut(key_data)
 }
 
 function draw() {
+	background(0, 0, 0);
 	displayCar(enemyLoc.x, enemyLoc.y);
 	displayCar(playerLoc.x, playerLoc.y);
 
@@ -66,8 +62,9 @@ function draw() {
 
 function displayCar(x, y)
 {
-	$('#bear').css("top", (playerLoc.y - playerDims.y / 2) + "px");
-	$('#bear').css("left", (playerLoc.x - playerDims.x / 2) + "px");
+	imageMode(CENTER);
+	fill(255, 255, 255);
+	image(picture, x, y, playersDims.x, playersDims.y);
 }
 
 function keyReleased() {
@@ -110,11 +107,11 @@ function updateEnemy(loc_data)
 
 function vecInCanvas(vec)
 {
-		let xLIn = vec.x > playerDims.x / 2;
-		let xRIn = vec.x < screen_dims[0] - playerDims.x / 2;
+		let xLIn = vec.x > playersDims.x / 2;
+		let xRIn = vec.x < screen_dims[0] - playersDims.x / 2;
 
-		let yUIn = vec.y > playerDims.y / 2;
-		let yLIn = vec.y < screen_dims[1] - playerDims.y / 2;
+		let yUIn = vec.y > playersDims.y / 2;
+		let yLIn = vec.y < screen_dims[1] - playersDims.y / 2;
 
 		return (xLIn && xRIn && yUIn && yLIn);
 }
