@@ -9,8 +9,11 @@ var playerLoc, enemyLoc;
 var playerVel, enemyVel;
 const maxSpeed = 5;
 const acceleration = 0.5;
-const playerDims = new p5.Vector(80, 160);
+const playerDims = new p5.Vector(160, 80);
 const dt = 1;
+
+var pct = 0;
+var ect = 0;
 
 function setup() {
 	screen_dims = [windowWidth, windowHeight];
@@ -25,15 +28,17 @@ function setup() {
 	socket = io.connect();
 	socket.on('key', freakOut);
 	socket.on('updatePlayer', updateEnemy);
+
 	jQuery('<img/>', {
     id: 'bear',
-    src: 'bear.png',
+    src: 'batch/dog1.png',
 		width: playerDims.x,
 		height: playerDims.y
 	}).appendTo('body');
+
 	jQuery('<img/>', {
     id: 'bearEnemy',
-    src: 'bear.png',
+    src: 'batch/dog1.png',
 		width: playerDims.x,
 		height: playerDims.y
 	}).appendTo('body');
@@ -48,6 +53,50 @@ function freakOut(key_data)
 function draw() {
 	displayCar(enemyLoc.x, enemyLoc.y, '#bearEnemy');
 	displayCar(playerLoc.x, playerLoc.y, '#bear');
+
+	if (playerVel.x < 0 && !$('#bear').hasClass("flipped"))
+	{
+		$('#bear').addClass('flipped');
+	}
+	if (playerVel.x > 0 && $('#bear').hasClass("flipped"))
+	{
+		$('#bear').removeClass('flipped');
+	}
+
+	if (enemyVel.x < 0 && !$('#bearEnemy').hasClass("flipped"))
+	{
+		$('#bearEnemy').addClass('flipped');
+	}
+	if (enemyVel.x > 0 && $('#bearEnemy').hasClass("flipped"))
+	{
+		$('#bearEnemy').removeClass('flipped');
+	}
+
+	if (playerVel.x != 0)
+	{
+		pct = (pct + 1) % 50;
+	}
+	if (enemyVel.x != 0)
+	{
+		ect = (ect + 1) % 50;
+	}
+
+	if (pct == 0)
+	{
+		$('#bear').attr("src", "batch/dog1.png");
+	}
+	else if (pct == 25)
+	{
+		$('#bear').attr("src", "batch/dog2.png");
+	}
+	if (ect == 0)
+	{
+		$('#bearEnemy').attr("src", "batch/dog1.png");
+	}
+	else if (ect == 25)
+	{
+		$('#bearEnemy').attr("src", "batch/dog2.png");
+	}
 
 	if (playerVel.mag() > maxSpeed)
 	{
