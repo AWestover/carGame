@@ -14,6 +14,9 @@ const dt = 1;
 var pct = 0;
 var ect = 0;
 
+var bullets = [];
+var nextBulletId = 0;
+
 function setup() {
 	screen_dims = [windowWidth, windowHeight];
 	playerLoc = createVector(screen_dims[0] / 2, screen_dims[1] / 2);
@@ -60,9 +63,6 @@ function draw() {
 	{
 		$('#bear').removeClass('flipped');
 	}
-
-	console.log(enemyVel.x);
-
 	if (enemyVel.x < 0 && !$('#bearEnemy').hasClass("flipped"))
 	{
 		$('#bearEnemy').addClass('flipped');
@@ -73,36 +73,15 @@ function draw() {
 		$('#bearEnemy').removeClass('flipped');
 	}
 
-	if (playerVel.x != 0)
-	{
-		pct = (pct + 1) % 50;
-	}
-	if (enemyVel.x != 0)
-	{
-		ect = (ect + 1) % 50;
-	}
+	if (playerVel.x != 0){pct = (pct + 1) % 50;}
+	if (enemyVel.x != 0){ect = (ect + 1) % 50;}
 
-	if (pct == 0)
-	{
-		$('#bear').attr("src", "batch/dog1.png");
-	}
-	else if (pct == 25)
-	{
-		$('#bear').attr("src", "batch/dog2.png");
-	}
-	if (ect == 0)
-	{
-		$('#bearEnemy').attr("src", "batch/dog1.png");
-	}
-	else if (ect == 25)
-	{
-		$('#bearEnemy').attr("src", "batch/dog2.png");
-	}
+	if (pct == 0){$('#bear').attr("src", "batch/dog1.png");}
+	else if (pct == 25){$('#bear').attr("src", "batch/dog2.png");}
+	if (ect == 0){$('#bearEnemy').attr("src", "batch/dog1.png");}
+	else if (ect == 25){$('#bearEnemy').attr("src", "batch/dog2.png");}
 
-	if (playerVel.mag() > maxSpeed)
-	{
-		playerVel.mult(maxSpeed / playerVel.mag());
-	}
+	if (playerVel.mag() > maxSpeed){playerVel.mult(maxSpeed / playerVel.mag());}
 
 	var nextVel = p5.Vector.add(p5.Vector.mult(playerVel, dt), playerLoc);
 	if (vecInCanvas(nextVel) && playerVel.mag() != 0)
@@ -120,6 +99,11 @@ function draw() {
 		playerVel.mult(0);
 	}
 
+	for (var i = 0; i < bullets.length; i++)
+	{
+		bullets[i].update();
+	}
+
 }
 
 function displayCar(x, y, tag)
@@ -129,6 +113,15 @@ function displayCar(x, y, tag)
 }
 
 function keyReleased() {
+	if (key == ' ')  // space
+	{
+		var cId = '#bullet' + nextBulletId;
+		$('body').append('<img id = "bullet' + nextBulletId + '" class="bullet" src="batch/bullet.png" ></img>');
+		$(cId).css("top", "0px");
+		$(cId).css("left", "0px");
+		bullets.push(new Bullet(cId));
+		nextBulletId += 1;
+	}
 	playerVel.add(updateCarVector(key));
 	var key_data = {
 		k: key,
