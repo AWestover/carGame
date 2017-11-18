@@ -119,7 +119,7 @@ function keyReleased() {
 		$('body').append('<img id = "bullet' + nextBulletId + '" class="bullet" src="batch/bullet.png" ></img>');
 		$(cId).css("top", "0px");
 		$(cId).css("left", "0px");
-		bullets.push(new Bullet(cId));
+		bullets.push(new Bullet(cId, playerLoc.copy(), playerVel.copy()));
 		nextBulletId += 1;
 	}
 	playerVel.add(updateCarVector(key));

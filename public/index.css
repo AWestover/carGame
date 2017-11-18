@@ -1,6 +1,7 @@
 body {
   background-color: green;
   margin: 10%;
+  overflow: hidden;
 }
 
 img {
@@ -18,5 +19,5 @@ img {
 
 
 .bullet {
-  width: 20%;
+  width: 4%;
 }

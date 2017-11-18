@@ -1,12 +1,14 @@
-function Bullet(ref)
+function Bullet(ref, initPos, initVel)
 {
   this.ref = ref;
   this.el = $(ref);
-  this.pos = createVector(0, 0);
-  this.vel = createVector(1, 1);
+  this.pos = initPos;
+  this.pos.y -= 30;
+  this.vel = p5.Vector.fromAngle(initVel.heading()).mult(5);
 }
 
 Bullet.prototype.update = function () {
   this.pos.add(this.vel);
-  this.el.addClass("flipped");
+  this.el.css("left", this.pos.x);
+  this.el.css("top", this.pos.y);
 };
