@@ -4,7 +4,6 @@
 var socket;
 var screen_dims;
 var screen_color = [0, 0, 0];
-var picture;
 var playerLoc, enemyLoc;
 var playerVel, enemyVel;
 const maxSpeed = 5;
@@ -24,7 +23,6 @@ function setup() {
 	playerVel = new p5.Vector(0, 0);
 	enemyVel = new p5.Vector(0, 0);
 
-	picture = loadImage("bear.png");
 	socket = io.connect();
 	socket.on('key', freakOut);
 	socket.on('updatePlayer', updateEnemy);
@@ -58,17 +56,20 @@ function draw() {
 	{
 		$('#bear').addClass('flipped');
 	}
-	if (playerVel.x > 0 && $('#bear').hasClass("flipped"))
+	else if (playerVel.x > 0 && $('#bear').hasClass("flipped"))
 	{
 		$('#bear').removeClass('flipped');
 	}
+
+	console.log(enemyVel.x);
 
 	if (enemyVel.x < 0 && !$('#bearEnemy').hasClass("flipped"))
 	{
 		$('#bearEnemy').addClass('flipped');
 	}
-	if (enemyVel.x > 0 && $('#bearEnemy').hasClass("flipped"))
+	else if (enemyVel.x > 0 && $('#bearEnemy').hasClass("flipped"))
 	{
+		console.log("should flip");
 		$('#bearEnemy').removeClass('flipped');
 	}
 
@@ -109,7 +110,9 @@ function draw() {
 		playerLoc.add(playerVel.mult(dt));
 		var loc_data = {
 			expos: playerLoc.x,
-			eypos: playerLoc.y
+			eypos: playerLoc.y,
+			exv: playerVel.x,
+			eyv: playerVel.y
 		}
 		socket.emit('updatePlayer', loc_data);
 	}
@@ -160,6 +163,7 @@ function updateCarVector(key)
 function updateEnemy(loc_data)
 {
 	enemyLoc.set(loc_data.expos, loc_data.eypos);
+	enemyVel.set(loc_data.exv, loc_data.eyv);
 }
 
 function vecInCanvas(vec)
