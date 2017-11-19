@@ -122,10 +122,12 @@ function displayCar(x, y, tag)
 function keyReleased() {
 	if (key == ' ') // shoot
 	{
-		var cId = '#bullet' + socket.id + ":" + nextBulletId;
-		$('body').append('<img id = "bullet' + socket.id + ":" + nextBulletId + '" class="bullet" src="batch/bullet.png" ></img>');
-		$(cId).css("top", "0px");
-		$(cId).css("left", "0px");
+		var cId = 'bullet' + socket.id + '' + nextBulletId;
+		console.log(cId);
+		$('body').append('<img id=' + cId + ' class="bullet" src="batch/bullet.png" ></img>');
+		$('#' + cId).css("top", "0px");
+		$('#' + cId).css("left", "0px");
+
 		var shoot_data = {
 			ccId: cId,
 			px: playerLoc.x,
@@ -133,6 +135,7 @@ function keyReleased() {
 			pvx: playerVel.x,
 			pvy: playerVel.y
 		}
+
 		socket.emit('shoot', shoot_data);
 		nextBulletId += 1;
 	}

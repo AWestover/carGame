@@ -1,7 +1,7 @@
 function Bullet(ref, initPos, initVel)
 {
   this.ref = ref;
-  this.el = $(ref);
+  this.el = $('#' + this.ref);
   this.pos = initPos;
   this.pos.y -= 30;
   this.vel = p5.Vector.fromAngle(initVel.heading()).mult(5);

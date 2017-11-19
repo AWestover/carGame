@@ -20,4 +20,5 @@ img {
 
 .bullet {
   width: 100px;
+  position: absolute;
 }
