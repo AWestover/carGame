@@ -50,7 +50,9 @@ function addBullet(shoot_data)
 {
 	var newPos = createVector(shoot_data.px, shoot_data.py);
 	var newVel = createVector(shoot_data.pvx, shoot_data.pvy);
-	bullets.push(new Bullet(shoot_data.ccId, newPos, newVel));
+	var newBullet = new Bullet(shoot_data.ccId, newPos, newVel);
+	newBullet.initialize();
+	bullets.push(newBullet);
 }
 
 function freakOut(key_data)
@@ -123,7 +125,6 @@ function keyReleased() {
 	if (key == ' ') // shoot
 	{
 		var cId = 'bullet' + socket.id + '' + nextBulletId;
-		console.log(cId);
 		$('body').append('<img id=' + cId + ' class="bullet" src="batch/bullet.png" ></img>');
 		$('#' + cId).css("top", "0px");
 		$('#' + cId).css("left", "0px");
