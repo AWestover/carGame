@@ -19,7 +19,23 @@
 
 </head>
 <body>
-  <h1>The car game</h1>
-  <h2>Now featuring bears</h2>
+  <div id="annoyingIntro">
+    <h1>The car game</h1>
+    <h2>Now featuring bears</h2>
+
+    <label>Would you like sound</label>
+    <input type="text" id="sound" />
+    <button onclick="checkSound();">Done</button>
+  </div>
+  <script>
+    function checkSound()
+    {
+      if (document.getElementById("sound").value == "o yea")
+      {
+        song.loop();
+      }
+      $('#annoyingIntro').remove();
+    }
+  </script>
 </body>
 </html>

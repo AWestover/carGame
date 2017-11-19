@@ -12,11 +12,20 @@ const playerDims = new p5.Vector(300, 150);
 const bulletOffset = playerDims.x*0.375;
 const dt = 1;
 
+var song;
+
 var pct = 0;
 var ect = 0;
 
 var bullets = [];
 var nextBulletId = 0;
+
+
+function preload()
+{
+	song = loadSound("batch/MailmanSong2.mp3");
+}
+
 
 function setup() {
 	screen_dims = [windowWidth, windowHeight];
