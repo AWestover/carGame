@@ -142,6 +142,30 @@ function displayCar(x, y, tag)
 	$(tag).css("left", (x - playerDims.x / 2) + "px");
 }
 
+
+function buttonTrigger(action) {
+	console.log("triggered");
+	if (action == 'shoot')
+	{
+		var cId = 'bullet' + socket.id + '' + nextBulletId;
+
+		var shoot_data = {
+			ccId: cId,
+			px: playerLoc.x,
+			py: playerLoc.y,
+			pvx: playerVel.x,
+			pvy: playerVel.y,
+			bulletOffset: bulletOffset
+		}
+
+		socket.emit('shoot', shoot_data);
+		nextBulletId += 1;
+	}
+	else {
+			playerVel.add(updateCarVector(action));
+	}
+}
+
 function keyReleased() {
 	if (key == ' ') // shoot
 	{

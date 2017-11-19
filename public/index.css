@@ -23,3 +23,30 @@ img {
   height: 3px;
   position: absolute;
 }
+
+
+button
+{
+  width: 10%;
+  height: 20%;
+}
+
+#arrows
+{
+  position: absolute;
+  left: 65%;
+  bottom: 10%;
+  width: 50%;
+  height: 30%;
+
+}
+#arrows button {
+  background-color: red;
+}
+#up {
+  margin-left: 10.3%;
+}
+#shoot {
+  background: orange;
+  left: 0;
+}
