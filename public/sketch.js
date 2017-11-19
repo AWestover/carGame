@@ -8,7 +8,8 @@ var playerLoc, enemyLoc;
 var playerVel, enemyVel;
 const maxSpeed = 5;
 const acceleration = 0.5;
-const playerDims = new p5.Vector(160, 80);
+const playerDims = new p5.Vector(300, 150);
+const bulletOffset = playerDims.x*0.375;
 const dt = 1;
 
 var pct = 0;
@@ -50,7 +51,7 @@ function addBullet(shoot_data)
 {
 	var newPos = createVector(shoot_data.px, shoot_data.py);
 	var newVel = createVector(shoot_data.pvx, shoot_data.pvy);
-	var newBullet = new Bullet(shoot_data.ccId, newPos, newVel);
+	var newBullet = new Bullet(shoot_data.ccId, newPos, newVel, shoot_data.bulletOffset);
 	newBullet.initialize();
 	bullets.push(newBullet);
 }
@@ -78,7 +79,6 @@ function draw() {
 	}
 	else if (enemyVel.x > 0 && $('#bearEnemy').hasClass("flipped"))
 	{
-		console.log("should flip");
 		$('#bearEnemy').removeClass('flipped');
 	}
 
@@ -108,9 +108,21 @@ function draw() {
 		playerVel.mult(0);
 	}
 
-	for (var i = 0; i < bullets.length; i++)
+	for (var i = bullets.length - 1; i >= 0; i--)
 	{
 		bullets[i].update(dt);
+		if (bullets[i].overboundary(screen_dims))
+		{
+			bullets[i].die();
+			bullets.splice(i, 1);
+		}
+		else if(bullets[i].checkCollision(playerLoc, playerDims, socket.id))
+		{
+			alert("OWWWWW");
+			bullets[i].die();
+			bullets.splice(i, 1);
+		}
+
 	}
 
 }
@@ -125,16 +137,14 @@ function keyReleased() {
 	if (key == ' ') // shoot
 	{
 		var cId = 'bullet' + socket.id + '' + nextBulletId;
-		$('body').append('<img id=' + cId + ' class="bullet" src="batch/bullet2.png" ></img>');
-		$('#' + cId).css("top", "0px");
-		$('#' + cId).css("left", "0px");
 
 		var shoot_data = {
 			ccId: cId,
 			px: playerLoc.x,
 			py: playerLoc.y,
 			pvx: playerVel.x,
-			pvy: playerVel.y
+			pvy: playerVel.y,
+			bulletOffset: bulletOffset
 		}
 
 		socket.emit('shoot', shoot_data);
