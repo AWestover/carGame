@@ -2,6 +2,9 @@
 <html>
 <head>
   <title>Bear Game</title>
+  <!-- resize -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
   <!-- p5 libraries-->
   <script src="libraries/p5/p5.js" type="text/javascript"></script>
   <script src="libraries/p5/addons/p5.dom.js" type="text/javascript"></script>
@@ -27,6 +30,18 @@
     <input type="text" id="sound" />
     <button onclick="checkSound();">Done</button>
   </div>
+
+  <div id="shootDiv">
+    <button id ="shoot" onclick="shootBull();">shoot</button>
+  </div>
+
+  <div id="arrows">
+  	<button id ="up" onclick="buttonTrigger('w');">&uarr;</button>
+  	<br><button id ="left" onclick="buttonTrigger('a');">&larr;</button>
+  	<button id ="down" onclick="buttonTrigger('s');">&darr;</button>
+  	<button id ="right" onclick="buttonTrigger('d');">&rarr;</button>
+  </div>
+
   <script>
     function checkSound()
     {
@@ -37,16 +52,6 @@
       $('#annoyingIntro').remove();
     }
   </script>
-
-
-  <button id ="shoot" onclick="alert('shoot');">shoot</button>
-
-  <div id="arrows">
-  	<button id ="up" onclick="buttonTrigger('w');">&uarr;</button>
-  	<br><button id ="left" onclick="buttonTrigger('a');">&larr;</button>
-  	<button id ="down" onclick="buttonTrigger('s');">&darr;</button>
-  	<button id ="right" onclick="buttonTrigger('d');">&rarr;</button>
-  </div>
 
 </body>
 </html>

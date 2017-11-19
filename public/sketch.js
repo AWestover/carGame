@@ -166,23 +166,25 @@ function buttonTrigger(action) {
 	}
 }
 
-function keyReleased() {
-	if (key == ' ') // shoot
-	{
-		var cId = 'bullet' + socket.id + '' + nextBulletId;
 
-		var shoot_data = {
-			ccId: cId,
-			px: playerLoc.x,
-			py: playerLoc.y,
-			pvx: playerVel.x,
-			pvy: playerVel.y,
-			bulletOffset: bulletOffset
-		}
+function shootBull() {
+	var cId = 'bullet' + socket.id + '' + nextBulletId;
 
-		socket.emit('shoot', shoot_data);
-		nextBulletId += 1;
+	var shoot_data = {
+		ccId: cId,
+		px: playerLoc.x,
+		py: playerLoc.y,
+		pvx: playerVel.x,
+		pvy: playerVel.y,
+		bulletOffset: bulletOffset
 	}
+
+	socket.emit('shoot', shoot_data);
+	nextBulletId += 1;
+}
+
+function keyReleased() {
+	if (key == ' ') {shootBull();}
 	playerVel.add(updateCarVector(key));
 	var key_data = {
 		k: key,
