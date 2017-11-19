@@ -31,15 +31,21 @@
     <button onclick="checkSound();">Done</button>
   </div>
 
-  <div id="shootDiv">
-    <button id ="shoot" onclick="shootBull();">shoot</button>
-  </div>
+  <div id="stuff">
+    <button onclick="$('#stuff').remove();">Eliminate annoyances</button>
 
-  <div id="arrows">
-  	<button id ="up" onclick="buttonTrigger('w');">&uarr;</button>
-  	<br><button id ="left" onclick="buttonTrigger('a');">&larr;</button>
-  	<button id ="down" onclick="buttonTrigger('s');">&darr;</button>
-  	<button id ="right" onclick="buttonTrigger('d');">&rarr;</button>
+    <div id="control">
+      <div id="shootDiv">
+        <button id ="shoot" onclick="shootBull();">shoot</button>
+      </div>
+
+      <div id="arrows">
+      	<button id ="up" onclick="buttonTrigger('w');">&uarr;</button>
+      	<br><button id ="left" onclick="buttonTrigger('a');">&larr;</button>
+      	<button id ="down" onclick="buttonTrigger('s');">&darr;</button>
+      	<button id ="right" onclick="buttonTrigger('d');">&rarr;</button>
+      </div>
+    </div>
   </div>
 
   <script>
