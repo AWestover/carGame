@@ -29,6 +29,7 @@ function setup() {
 	socket = io.connect();
 	socket.on('key', freakOut);
 	socket.on('updatePlayer', updateEnemy);
+	socket.on('shoot', addBullet);
 
 	jQuery('<img/>', {
     id: 'bear',
@@ -45,10 +46,16 @@ function setup() {
 	}).appendTo('body');
 }
 
+function addBullet(shoot_data)
+{
+	var newPos = createVector(shoot_data.px, shoot_data.py);
+	var newVel = createVector(shoot_data.pvx, shoot_data.pvy);
+	bullets.push(new Bullet(shoot_data.ccId, newPos, newVel));
+}
 
 function freakOut(key_data)
 {
-	console.log("ahh");
+	console.log("key pressed somewhere...");
 }
 
 function draw() {
@@ -101,7 +108,7 @@ function draw() {
 
 	for (var i = 0; i < bullets.length; i++)
 	{
-		bullets[i].update();
+		bullets[i].update(dt);
 	}
 
 }
@@ -113,13 +120,20 @@ function displayCar(x, y, tag)
 }
 
 function keyReleased() {
-	if (key == ' ')  // space
+	if (key == ' ') // shoot
 	{
-		var cId = '#bullet' + nextBulletId;
-		$('body').append('<img id = "bullet' + nextBulletId + '" class="bullet" src="batch/bullet.png" ></img>');
+		var cId = '#bullet' + socket.id + ":" + nextBulletId;
+		$('body').append('<img id = "bullet' + socket.id + ":" + nextBulletId + '" class="bullet" src="batch/bullet.png" ></img>');
 		$(cId).css("top", "0px");
 		$(cId).css("left", "0px");
-		bullets.push(new Bullet(cId, playerLoc.copy(), playerVel.copy()));
+		var shoot_data = {
+			ccId: cId,
+			px: playerLoc.x,
+			py: playerLoc.y,
+			pvx: playerVel.x,
+			pvy: playerVel.y
+		}
+		socket.emit('shoot', shoot_data);
 		nextBulletId += 1;
 	}
 	playerVel.add(updateCarVector(key));

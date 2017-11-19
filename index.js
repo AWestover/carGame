@@ -18,18 +18,19 @@ var io = socket(server);
 io.sockets.on('connection', newConnection);
 
 function newConnection(socket) {
-	//console.log(socket.id);
 	socket.on('key', keyMsg);
 	socket.on('updatePlayer', locMsg);
-	/*
-	function mouseMsg(data) {
-		socket.broadcast.emit('mouse', data);
-		//console.log(data);
-	}
-	*/
+	socket.on('shoot', shootMsg);
+
+
 	function keyMsg(key_data)
 	{
-		socket.broadcast.emit('key', key_data);
+		io.sockets.emit('key', key_data);
+	}
+
+	function shootMsg(shoot_data)
+	{
+		io.sockets.emit('shoot', shoot_data);
 	}
 
 	function locMsg(loc_data)
@@ -38,5 +39,3 @@ function newConnection(socket) {
 	}
 
 }
-
-console.log("Alek Is running");

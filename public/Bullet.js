@@ -7,8 +7,8 @@ function Bullet(ref, initPos, initVel)
   this.vel = p5.Vector.fromAngle(initVel.heading()).mult(5);
 }
 
-Bullet.prototype.update = function () {
-  this.pos.add(this.vel);
-  this.el.css("left", this.pos.x);
-  this.el.css("top", this.pos.y);
+Bullet.prototype.update = function (dt) {
+  this.pos.add(this.vel.mult(dt));
+  this.el.css("left", this.pos.x + "px");
+  this.el.css("top", this.pos.y + "px");
 };
