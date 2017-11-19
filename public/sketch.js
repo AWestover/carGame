@@ -125,7 +125,7 @@ function keyReleased() {
 	if (key == ' ') // shoot
 	{
 		var cId = 'bullet' + socket.id + '' + nextBulletId;
-		$('body').append('<img id=' + cId + ' class="bullet" src="batch/bullet.png" ></img>');
+		$('body').append('<img id=' + cId + ' class="bullet" src="batch/bullet2.png" ></img>');
 		$('#' + cId).css("top", "0px");
 		$('#' + cId).css("left", "0px");
 

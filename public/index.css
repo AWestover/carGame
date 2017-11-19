@@ -1,5 +1,5 @@
 body {
-  background-color: green;
+  background-color: #00ffff;
   margin: 10%;
   overflow: hidden;
 }
@@ -19,6 +19,6 @@ img {
 
 
 .bullet {
-  width: 100px;
+  width: 10px;
   position: absolute;
 }
