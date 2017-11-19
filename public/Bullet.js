@@ -7,13 +7,14 @@ function Bullet(ref, initPos, initVel)
   this.vel = p5.Vector.fromAngle(initVel.heading()).mult(5);
 }
 
-Bullet.prototype.initialize()
+Bullet.prototype.initialize = function()
 {
   if (this.el.length == 0)
   {
     $('body').append('<img id=' + this.ref + ' class="bullet" src="batch/bullet.png" ></img>');
-    this.el.css("top", "0px");
-    this.el.css("left", "0px");
+    this.el = $('#' + this.ref);
+    $('#' + this.ref).css("top", "0px");
+    $('#' + this.ref).css("left", "0px");
   }
 }
 
