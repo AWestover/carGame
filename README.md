@@ -171,6 +171,8 @@ heroku git:clone -a alek-car-game
 depending on whether it is a new app or not
 
 git push heroku master
+
+
 _(improve this guide later)_
 
 # this application is hosted at the site below
