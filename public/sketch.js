@@ -1,40 +1,43 @@
 // Alek Westover
 // A multiplayer game
 
-var socket;
-var screen_dims;
-var screen_color = [0, 0, 0];
-var playerLoc, enemyLoc;
-var playerVel, enemyVel;
+let socket;
+let screen_dims;
+let screen_color = [0, 0, 0];
+let playerLoc, enemyLoc;
+let fakePlayerLoc;  // position the player seems to occupy to him
+let fakeMultiplier = 1.1;
+let playerVel, enemyVel;
 const maxSpeed = 5;
 const acceleration = 0.5;
 const playerDims = new p5.Vector(300, 150);
 const bulletOffset = playerDims.x*0.375;
 const dt = 1;
 
-var song;
+let song;
 
-var pct = 0;
-var ect = 0;
+let pct = 0;
+let ect = 0;
 
-var bullets = [];
-var nextBulletId = 0;
-
+let bullets = [];
+let nextBulletId = 0;
 
 function preload()
 {
 	song = loadSound("batch/MailmanSong2.mp3");
 }
 
-
 function setup() {
 	screen_dims = [windowWidth, windowHeight];
 	playerLoc = createVector(screen_dims[0] / 2, screen_dims[1] / 2);
-	enemyLoc = createVector(screen_dims[0] / 2, screen_dims[1] / 2);
+	enemyLoc  = createVector(screen_dims[0] / 2, screen_dims[1] / 2);
+
+	fakePlayerLoc = createVector(0, 0);
+	fakePlayerLoc.set(playerLoc.x, playerLoc.y);
 
 	// createVector is a synonym for createVector()
 	playerVel = new p5.Vector(0, 0);
-	enemyVel = new p5.Vector(0, 0);
+	enemyVel  = new p5.Vector(0, 0);
 
 	socket = io.connect();
 	socket.on('key', freakOut);
@@ -58,9 +61,9 @@ function setup() {
 
 function addBullet(shoot_data)
 {
-	var newPos = createVector(shoot_data.px, shoot_data.py);
-	var newVel = createVector(shoot_data.pvx, shoot_data.pvy);
-	var newBullet = new Bullet(shoot_data.ccId, newPos, newVel, shoot_data.bulletOffset);
+	let newPos = createVector(shoot_data.px, shoot_data.py);
+	let newVel = createVector(shoot_data.pvx, shoot_data.pvy);
+	let newBullet = new Bullet(shoot_data.ccId, newPos, newVel, shoot_data.bulletOffset);
 	newBullet.initialize();
 	bullets.push(newBullet);
 }
@@ -71,8 +74,9 @@ function freakOut(key_data)
 }
 
 function draw() {
-	displayCar(enemyLoc.x, enemyLoc.y, '#bearEnemy');
-	displayCar(playerLoc.x, playerLoc.y, '#bear');
+	let offset = p5.Vector.sub(playerLoc, fakePlayerLoc);
+	displayCar(enemyLoc.x - offset.x, enemyLoc.y - offset.y, '#bearEnemy');
+	displayCar(fakePlayerLoc.x, fakePlayerLoc.y, '#bear');
 
 	if (playerVel.x < 0 && !$('#bear').hasClass("flipped"))
 	{
@@ -101,23 +105,23 @@ function draw() {
 
 	if (playerVel.mag() > maxSpeed){playerVel.mult(maxSpeed / playerVel.mag());}
 
-	var nextVel = p5.Vector.add(p5.Vector.mult(playerVel, dt), playerLoc);
-	if (vecInCanvas(nextVel) && playerVel.mag() != 0)
-	{
-		playerLoc.add(playerVel.mult(dt));
-		var loc_data = {
-			expos: playerLoc.x,
-			eypos: playerLoc.y,
-			exv: playerVel.x,
-			eyv: playerVel.y
-		}
-		socket.emit('updatePlayer', loc_data);
+	let change = p5.Vector.mult(playerVel, dt);
+
+	playerLoc.add(change);
+	let loc_data = {
+		expos: playerLoc.x,
+		eypos: playerLoc.y,
+		exv: playerVel.x,
+		eyv: playerVel.y
 	}
-	else {
-		playerVel.mult(0);
+	socket.emit('updatePlayer', loc_data);
+	let proposal = p5.Vector.mult(p5.Vector.add(change, fakePlayerLoc), fakeMultiplier);
+	if (vecInCanvas(proposal))
+	{
+		fakePlayerLoc.add(change);
 	}
 
-	for (var i = bullets.length - 1; i >= 0; i--)
+	for (let i = bullets.length - 1; i >= 0; i--)
 	{
 		bullets[i].update(dt);
 		if (bullets[i].overboundary(screen_dims))
@@ -147,9 +151,9 @@ function buttonTrigger(action) {
 	console.log("triggered");
 	if (action == 'shoot')
 	{
-		var cId = 'bullet' + socket.id + '' + nextBulletId;
+		let cId = 'bullet' + socket.id + '' + nextBulletId;
 
-		var shoot_data = {
+		let shoot_data = {
 			ccId: cId,
 			px: playerLoc.x,
 			py: playerLoc.y,
@@ -168,9 +172,9 @@ function buttonTrigger(action) {
 
 
 function shootBull() {
-	var cId = 'bullet' + socket.id + '' + nextBulletId;
+	let cId = 'bullet' + socket.id + '' + nextBulletId;
 
-	var shoot_data = {
+	let shoot_data = {
 		ccId: cId,
 		px: playerLoc.x,
 		py: playerLoc.y,
@@ -186,7 +190,7 @@ function shootBull() {
 function keyReleased() {
 	if (key == ' ') {shootBull();}
 	playerVel.add(updateCarVector(key));
-	var key_data = {
+	let key_data = {
 		k: key,
 		expos: playerLoc.x,
 		eypos: playerLoc.y
@@ -196,7 +200,7 @@ function keyReleased() {
 
 function updateCarVector(key)
 {
-	var outVector = new p5.Vector(0, 0);
+	let outVector = new p5.Vector(0, 0);
 	if (key == 'A' || key == 'a')
 	{
 		outVector.x = -acceleration;
