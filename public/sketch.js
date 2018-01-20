@@ -16,6 +16,10 @@ const dt = 1;
 
 let song;
 
+let picture_selection = ["batch/dog1.png", "batch/dog2.png"];
+let alt_picture_selection = ["batch/shark1.png", "batch/shark2.png"];
+let special_sauce = 0;  // am I seceretly a shark?
+
 let pct = 0;
 let ect = 0;
 
@@ -44,6 +48,8 @@ function setup() {
 	socket.on('updatePlayer', updateEnemy);
 	socket.on('shoot', addBullet);
 
+	socket.on('loggedOn', handleLogIn);
+
 	jQuery('<img/>', {
     id: 'bear',
     src: 'batch/dog1.png',
@@ -68,9 +74,38 @@ function addBullet(shoot_data)
 	bullets.push(newBullet);
 }
 
+function handleLogIn(login_data)
+{
+	console.log("logged IN");
+}
+
 function freakOut(key_data)
 {
 	console.log("key pressed somewhere...");
+}
+
+function hashPwd(pwd)
+{
+	//this is a low key stupid algorithm
+	let mod = 104729;  // prime
+	let add = 7559;    // prime
+
+	let prod = 1;
+	for (let i = 0; i < pwd.length; i++)
+	{
+		prod = (prod*pwd.charCodeAt(i) + add) % mod;
+	}
+	return prod;
+}
+
+function isAlekCheck(pwd)
+{
+	if (hashPwd(pwd) == 80499)
+	{
+		// there is like a pretty good chance that you are Alek...
+		return true;
+	}
+	return false;
 }
 
 function draw() {
@@ -98,10 +133,21 @@ function draw() {
 	if (playerVel.x != 0){pct = (pct + 1) % 50;}
 	if (enemyVel.x != 0){ect = (ect + 1) % 50;}
 
-	if (pct == 0){$('#bear').attr("src", "batch/dog1.png");}
-	else if (pct == 25){$('#bear').attr("src", "batch/dog2.png");}
-	if (ect == 0){$('#bearEnemy').attr("src", "batch/dog1.png");}
-	else if (ect == 25){$('#bearEnemy').attr("src", "batch/dog2.png");}
+	if (special_sauce == 0)
+	{
+		if (pct == 0){$('#bear').attr("src", picture_selection[0]);}
+		else if (pct == 25){$('#bear').attr("src", picture_selection[1]);}
+	}
+	else
+	{
+		if (pct == 0){$('#bear').attr("src", alt_picture_selection[0]);}
+		else if (pct == 25){$('#bear').attr("src", alt_picture_selection[1]);}
+
+		console.log("specialness");
+	}
+
+	if (ect == 0){$('#bearEnemy').attr("src", picture_selection[0]);}
+	else if (ect == 25){$('#bearEnemy').attr("src", picture_selection[1]);}
 
 	if (playerVel.mag() > maxSpeed){playerVel.mult(maxSpeed / playerVel.mag());}
 
@@ -123,7 +169,9 @@ function draw() {
 
 	for (let i = bullets.length - 1; i >= 0; i--)
 	{
-		bullets[i].update(dt);
+		let shiftx = -1*(playerLoc.x - fakePlayerLoc.x);
+		let shifty = -1*(playerLoc.y - fakePlayerLoc.y);
+		bullets[i].update(dt, shiftx, shifty);
 		if (bullets[i].overboundary(screen_dims))
 		{
 			bullets[i].die();

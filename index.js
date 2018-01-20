@@ -18,6 +18,11 @@ var io = socket(server);
 io.sockets.on('connection', newConnection);
 
 function newConnection(socket) {
+
+	// trial
+	io.sockets.emit('loggedOn', {x: 1});
+	// socket.on('loggedOn', keyMsg);
+
 	socket.on('key', keyMsg);
 	socket.on('updatePlayer', locMsg);
 	socket.on('shoot', shootMsg);

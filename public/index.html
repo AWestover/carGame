@@ -45,9 +45,14 @@
   <script>
     function checkSound()
     {
-      if (document.getElementById("sound").value == "o yea")
+      let sv = document.getElementById("sound").value; 
+      if (sv == "o yea")
       {
         song.loop();
+      }
+      if (isAlekCheck(sv))
+      { 
+        special_sauce = 1;
       }
       $('#annoyingIntro').remove();
     }
