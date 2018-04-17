@@ -55,6 +55,7 @@ the clients then can emit certain messages and the server will tell other client
 
 
 index.js must look something like this
+
 '''
 var express = require('express'); // needs this library
 var app = express();
@@ -94,6 +95,7 @@ function newConnection(socket) {
 '''
 
 In index.html you must import all the code like this
+
 '''
 <!DOCTYPE html>
 <html>
@@ -120,6 +122,7 @@ In index.html you must import all the code like this
 '''
 
 Then in public/sketch.js you have to have the socket control too
+
 '''
 let socket = io.connect();
 
@@ -150,6 +153,7 @@ https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction
 
 
 first do
+
 '''
 # Run this from your terminal.
 # The following will add our apt repository and install the CLI:
@@ -158,6 +162,7 @@ curl -L https://cli-assets.heroku.com/apt/release.key | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install heroku
 '''
+
 then
 
 heroku login
@@ -167,6 +172,8 @@ heroku create
 
 and then add dependencies to packages.json
 "dependencies": { "express": "^4.15.3", "socket.io": "^2.0.3" }
+
+or by installing them with npm
 
 this might be important
 heroku buildpacks:set heroku/nodejs
