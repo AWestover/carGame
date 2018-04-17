@@ -95,30 +95,29 @@ index.js must look something like this
 
 In index.html you must import all the code like this
 
-'''
-<!DOCTYPE html>
-<html>
-<head>
-  <!-- resize -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!DOCTYPE html>
+	<html>
+	<head>
+	  <!-- resize -->
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-  <!-- p5 libraries-->
-  <script src="libraries/p5/p5.js" type="text/javascript"></script>
-  <script src="libraries/p5/addons/p5.dom.js" type="text/javascript"></script>
-	<script src="libraries/p5/addons/p5.sound.js" type="text/javascript"></script>
-  <!--jquery-->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <!-- main program -->
-  <script src="sketch.js" type="text/javascript"></script>
-  <!-- node libraries -->
-  <script src="/socket.io/socket.io.js"></script>
-  <!-- style -->
-  <link rel="stylesheet" type="text/css" href="index.css">
-  <!-- classes -->
-  <script src="Bullet.js" type="text/javascript"></script>
-</head>
-</html>
-'''
+	  <!-- p5 libraries-->
+	  <script src="libraries/p5/p5.js" type="text/javascript"></script>
+	  <script src="libraries/p5/addons/p5.dom.js" type="text/javascript"></script>
+		<script src="libraries/p5/addons/p5.sound.js" type="text/javascript"></script>
+	  <!--jquery-->
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	  <!-- main program -->
+	  <script src="sketch.js" type="text/javascript"></script>
+	  <!-- node libraries -->
+	  <script src="/socket.io/socket.io.js"></script>
+	  <!-- style -->
+	  <link rel="stylesheet" type="text/css" href="index.css">
+	  <!-- classes -->
+	  <script src="Bullet.js" type="text/javascript"></script>
+	</head>
+	</html>
+
 
 Then in public/sketch.js you have to have the socket control too
 
@@ -164,10 +163,10 @@ first do
 
 then
 
-heroku login
+	heroku login
 
 you might need to do
-heroku create
+	heroku create
 
 and then add dependencies to packages.json
     "dependencies": { "express": "^4.15.3", "socket.io": "^2.0.3" }
