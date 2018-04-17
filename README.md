@@ -176,8 +176,12 @@ and then add dependencies to package.json
 or by installing them with npm
 
 this might be important
-heroku buildpacks:set heroku/nodejs
-also might need a procfile thinf
+	heroku buildpacks:set heroku/nodejs
+also might need a procfile thing
+
+if you already have an origin you might have to do this:
+	git remote add heroku https://git.heroku.com/knight-rises.git
+
 
 or
     heroku git:clone -a alek-car-game
