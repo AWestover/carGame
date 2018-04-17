@@ -167,6 +167,8 @@ then
 
 you might need to do
 	heroku create
+or if you want a custom name (which you do)
+	heroku create example 
 
 and then add dependencies to package.json
 	"dependencies": { "express": "^4.15.3", "socket.io": "^2.0.3" }
