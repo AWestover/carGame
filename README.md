@@ -56,43 +56,42 @@ the clients then can emit certain messages and the server will tell other client
 
 index.js must look something like this
 
-'''
-var express = require('express'); // needs this library
-var app = express();
-var port = process.env.PORT || 3000;  // what port to open it on must have the option to be
-// chosen by server if you want it to be heroku compatible, also does need the default
-var server = require('http').createServer(app).listen(port);
-app.use(express.static('public'));
-console.log("server running");
-var socket = require('socket.io');
-var io = socket(server);
+    var express = require('express'); // needs this library
+    var app = express();
+    var port = process.env.PORT || 3000;  // what port to open it on must have the option to be
+    // chosen by server if you want it to be heroku compatible, also does need the default
+    var server = require('http').createServer(app).listen(port);
+    app.use(express.static('public'));
+    console.log("server running");
+    var socket = require('socket.io');
+    var io = socket(server);
 
-io.sockets.on('connection', newConnection);  // when you get a connection do this
+    io.sockets.on('connection', newConnection);  // when you get a connection do this
 
-function newConnection(socket) {
-  // what to listen for
-	socket.on('key', keyMsg);
-	socket.on('updatePlayer', locMsg);
-	socket.on('shoot', shootMsg);
+    function newConnection(socket) {
+      // what to listen for
+        socket.on('key', keyMsg);
+        socket.on('updatePlayer', locMsg);
+        socket.on('shoot', shootMsg);
 
-  // these are the functions that send data
+      // these are the functions that send data
 
-	function keyMsg(key_data)
-	{
-		io.sockets.emit('key', key_data);
-	}
+        function keyMsg(key_data)
+        {
+            io.sockets.emit('key', key_data);
+        }
 
-	function shootMsg(shoot_data)
-	{
-		io.sockets.emit('shoot', shoot_data);
-	}
+        function shootMsg(shoot_data)
+        {
+            io.sockets.emit('shoot', shoot_data);
+        }
 
-	function locMsg(loc_data)
-	{
-		socket.broadcast.emit('updatePlayer', loc_data);
-	}
-}
-'''
+        function locMsg(loc_data)
+        {
+            socket.broadcast.emit('updatePlayer', loc_data);
+        }
+    }
+
 
 In index.html you must import all the code like this
 
@@ -123,24 +122,24 @@ In index.html you must import all the code like this
 
 Then in public/sketch.js you have to have the socket control too
 
-'''
-let socket = io.connect();
 
-// when we are sent a 'key' or a message to 'updateEnemy' we call these functions
-socket.on('key', freakOut);
-socket.on('updatePlayer', updateEnemy);
-socket.on('shoot', addBullet);
+    let socket = io.connect();
 
-//we also have to emit data
-let loc_data = {
-  expos: playerLoc.x,
-  eypos: playerLoc.y,
-  exv: playerVel.x,
-  eyv: playerVel.y
-}
-socket.emit('updatePlayer', loc_data);
-// note the names must match
-'''
+    // when we are sent a 'key' or a message to 'updateEnemy' we call these functions
+    socket.on('key', freakOut);
+    socket.on('updatePlayer', updateEnemy);
+    socket.on('shoot', addBullet);
+
+    //we also have to emit data
+    let loc_data = {
+      expos: playerLoc.x,
+      eypos: playerLoc.y,
+      exv: playerVel.x,
+      eyv: playerVel.y
+    }
+    socket.emit('updatePlayer', loc_data);
+    // note the names must match
+
 
 # pushing to heroku notes
 Once you have followed the above notes to create a functional project there are some additional steps
@@ -154,14 +153,14 @@ https://devcenter.heroku.com/articles/getting-started-with-nodejs#introduction
 
 first do
 
-'''
+
 # Run this from your terminal.
 # The following will add our apt repository and install the CLI:
-sudo add-apt-repository "deb https://cli-assets.heroku.com/branches/stable/apt ./"
-curl -L https://cli-assets.heroku.com/apt/release.key | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install heroku
-'''
+    sudo add-apt-repository "deb https://cli-assets.heroku.com/branches/stable/apt ./"
+    curl -L https://cli-assets.heroku.com/apt/release.key | sudo apt-key add -
+    sudo apt-get update
+    sudo apt-get install heroku
+
 
 then
 
@@ -171,7 +170,7 @@ you might need to do
 heroku create
 
 and then add dependencies to packages.json
-"dependencies": { "express": "^4.15.3", "socket.io": "^2.0.3" }
+    "dependencies": { "express": "^4.15.3", "socket.io": "^2.0.3" }
 
 or by installing them with npm
 
@@ -180,11 +179,11 @@ heroku buildpacks:set heroku/nodejs
 also might need a procfile thinf
 
 or
-heroku git:clone -a alek-car-game
+    heroku git:clone -a alek-car-game
 
 depending on whether it is a new app or not
 
-git push heroku master
+    git push heroku master
 
 
 _(improve this guide later)_
