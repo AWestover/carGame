@@ -16,7 +16,7 @@ then install dependencies
 
 npm install
 
-(you must be in the same file as packages.json)
+(you must be in the same file as package.json)
 
 then run the node server
 
@@ -168,8 +168,8 @@ then
 you might need to do
 	heroku create
 
-and then add dependencies to packages.json
-    "dependencies": { "express": "^4.15.3", "socket.io": "^2.0.3" }
+and then add dependencies to package.json
+	"dependencies": { "express": "^4.15.3", "socket.io": "^2.0.3" }
 
 or by installing them with npm
 
