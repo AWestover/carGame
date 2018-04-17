@@ -5,16 +5,23 @@ Socket test
 Instructions:
 
 to run this you need to download the code first
+
 git init
+
 git remote add origin X
+
 git pull origin master
 
 then install dependencies
+
 npm install
+
 (you must be in the same file as packages.json)
 
 then run the node server
+
 node index.js
+
 (from the appropriate folder)
 
 then go to localhost:3000
